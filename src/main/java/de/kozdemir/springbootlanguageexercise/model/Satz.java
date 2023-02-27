@@ -7,9 +7,10 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class Artikel implements Serializable {
+public class Satz implements Serializable {
 
     @Id
     @GeneratedValue
     private long id;
+
 }
