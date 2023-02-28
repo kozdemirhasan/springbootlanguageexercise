@@ -1,47 +1,46 @@
 package de.kozdemir.springbootlanguageexercise.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Table(name = "app_users") // User Objekt mit der Tabelle app_users aus der DB verbinden
 public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
+    // @Column(name = "knr") // id mit der Spalte knr in der DB verbinden
     private long id;
 
-    @Column(length = 100, name = "FIRST_NAME")
-    private String firstname;
-
-    @Column(length = 100, name = "LAST_NAME")
-    private String lastname;
-
-    @Column(name = "USER_NAME", unique = true)
+    @Column(length = 50, unique = true)
     private String username;
 
-    @Column(name = "EMAIL", length = 100, unique = true)
+    @Column(length = 50, unique = true)
     private String email;
 
-    @Column(name = "PASSWORD", length = 100)
+    @Column(length = 100)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE")
     private UserRole role;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @Column(name = "CREATED_DATE")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime createdDate;
+    @Enumerated(EnumType.STRING)
+    private Languages motherLanguage;
+
+    @Enumerated(EnumType.STRING)
+    private Languages targetLanguage;
 
 
 }

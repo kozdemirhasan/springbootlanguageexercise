@@ -1,8 +1,5 @@
 package de.kozdemir.springbootlanguageexercise.controller;
 
-import de.kozdemir.springbootlanguageexercise.model.User;
-import de.kozdemir.springbootlanguageexercise.model.UserDto;
-import de.kozdemir.springbootlanguageexercise.repository.UserRepository;
 import de.kozdemir.springbootlanguageexercise.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,44 +8,57 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import javax.mail.MessagingException;
-
-import javax.validation.Valid;
-
 
 @Controller
-@RequestMapping("sess")
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    LoginService loginService;
 
-    @Autowired
-    private LoginService loginService;
-
-    @GetMapping("login")
-    public String loginForm(Model model) {
-        if (loginService.isLoggedIn())
-            return "redirect:/todos";
-        return "login-form";
+    @GetMapping("")
+    public String userPage(Model model) {
+        return "standart";
     }
 
-    @PostMapping("login")
-    public String login(String email, String password, Model model) {
-        User user = userRepository.findByEmail(email);
-        if (user != null && user.getPassword().equals(password)) {
-            loginService.doLogIn(user);
-            return "redirect:/todos";
+
+
+    @GetMapping("/new")
+    public String addword(Model model) {
+        model.addAttribute("motherLanguage", loginService.getUser().getMotherLanguage().toString().toLowerCase() );
+        model.addAttribute("targetLanguage",  loginService.getUser().getTargetLanguage().toString().toLowerCase());
+        return "new-word";
+    }
+
+    @PostMapping("/new")
+    public String add(String word, String wordMeaning, String sentence, String sentenceMeaning, BindingResult result, Model model) {
+
+        if( word.length()<=0){
+            result.rejectValue("word", "error.userDto", "Word is not empty");
+        } else if (wordMeaning.length()<=0) {
+            result.rejectValue("wordMeaning", "error.userDto", "Word Meaning is not empty");
+        }else if (sentence.length()<=0) {
+            result.rejectValue("sentence", "error.userDto", "Sentence is not empty");
+        }else if (sentenceMeaning.length()<=0) {
+            result.rejectValue("sentenceMeaning", "error.userDto", "Sentence Meaning is not empty");
+
         }
-        model.addAttribute("error", true);
-        return "login-form";
+
+
+        if(result.hasErrors()) {
+            return "register";
+        }else{
+            System.out.println("kayit yapildi");
+        }
+
+
+        return "new-sentence";
+    }
+
+    @GetMapping("/sentence")
+    public String addsentences(Model model) {
+        return "new-sentence";
     }
 
 
-    @GetMapping("logout")
-    public String logout(Model model) {
-        loginService.doLogOut();
-        model.addAttribute("data", "Abgemeldet");
-        return "redirect:/sess/login";
-    }
 }

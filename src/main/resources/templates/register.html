@@ -24,6 +24,22 @@
           </div>
 
           <div class="mb-3">
+            <label for="motherLanguage" class="form-label">Muther Sparache</label>
+            <select class="form-select" th:field="*{motherLanguage}" th:classappend="${#fields.hasErrors('motherLanguage')} ? 'is-invalid' : ''" >
+              <option th:each="l : ${languages}" th:value="${l}" th:text="${l}" ></option>
+            </select>
+            <p th:if="${#fields.hasErrors('motherLanguage')}" th:errors="*{motherLanguage}" class="text-danger"></p>
+          </div>
+
+          <div class="mb-3">
+            <label for="targetLanguage" class="form-label">Ziel Sprache</label>
+            <select class="form-select" th:field="*{targetLanguage}" th:classappend="${#fields.hasErrors('targetLanguage')} ? 'is-invalid' : ''">
+              <option th:each="l : ${languages}" th:value="${l}" th:text="${l}"  ></option>
+            </select>
+            <p th:if="${#fields.hasErrors('targetLanguage')}" th:errors="*{targetLanguage}" class="text-danger"></p>
+          </div>
+
+          <div class="mb-3">
             <label for="email" class="form-label">E-Mail</label>
             <input type="text" class="form-control" th:field="*{email}">
             <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>

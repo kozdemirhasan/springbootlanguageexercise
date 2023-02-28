@@ -3,6 +3,10 @@ package de.kozdemir.springbootlanguageexercise.model;
 
 import de.kozdemir.springbootlanguageexercise.annotation.PasswordMatch;
 import de.kozdemir.springbootlanguageexercise.validator.WithConfirmedPassword;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
@@ -10,6 +14,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @PasswordMatch
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class UserDto implements WithConfirmedPassword {
 
     @NotEmpty
@@ -18,6 +26,13 @@ public class UserDto implements WithConfirmedPassword {
     @Email(regexp = ".*")
     @NotEmpty
     private String email;
+
+
+
+    private Languages motherLanguage;
+
+
+    private Languages targetLanguage;
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,25}$", message = "Passwort ist ungültig.")
     private String password;
@@ -31,39 +46,10 @@ public class UserDto implements WithConfirmedPassword {
         user.setEmail(email.toLowerCase());
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(UserRole.USER);
+        user.setMotherLanguage(motherLanguage);
+        user.setTargetLanguage(targetLanguage);
         user.setStatus(UserStatus.CREATED);
         return user;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
 }

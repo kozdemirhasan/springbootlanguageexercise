@@ -15,23 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableScheduling
 public class SecurityConfig {
 
-    /*
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.withUsername("admin")
-                                .password(passwordEncoder().encode("geheim"))
-                                .roles("ADMIN")
-                                .build();
-
-        UserDetails user = User.withUsername("p.parker")
-                                .password(passwordEncoder().encode("geheim"))
-                                .roles("USER")
-                                .build();
-
-        return new InMemoryUserDetailsManager(admin, user);
-    }
-    */
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,32 +27,6 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        // Request -> Server -> SecurityChain -> Controller -> Response
-//        http
-//            .csrf().disable()
-//            //.httpBasic()
-//            .formLogin()
-//                .loginPage("/login")
-//                .failureUrl("/login/error")
-//                //.defaultSuccessUrl("/") // Weiterleitung nach dem Login
-//            .and()
-//                .authorizeRequests()
-//                    .antMatchers("/", "/login/**", "/register/**", "/activate/**", "/forgot/**", "/h2-console/**").permitAll() // Frei zugänglich
-//                    //.antMatchers("/admin/**").hasRole("ADMIN") // Freigabe nur mit einer bestimmten Role
-//                    .anyRequest().authenticated() // Alle anderen erfordern Anmeldung
-//            .and()
-//                .logout().logoutUrl("/logout")
-//                    .invalidateHttpSession(true); // Session wird ungültig
-//                    //.deleteCookies("JSESSIONID"); // Session-Cookie wird im Browser gelöscht
-//
-//        http.headers().frameOptions().sameOrigin(); // Freigabe der Frames für H2-Datenbank
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -80,11 +37,12 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login/error")
-                //.defaultSuccessUrl("/") // Weiterleitung nach dem Login
+//                .defaultSuccessUrl("/user") // Weiterleitung nach dem Login
                 .and()
                 .authorizeRequests()
-                .antMatchers("/index/**","/", "/login/**", "/register/**", "/activate/**", "/forgot/**", "/h2-console/**").permitAll() // Frei zugänglich
-                //.antMatchers("/admin/**").hasRole("ADMIN") // Freigabe nur mit einer bestimmten Role
+                .antMatchers( "/login/**", "/register/**", "/activate/**", "/forgot/**", "/h2-console/**").permitAll() // Frei zugänglich
+                .antMatchers("/admin/**").hasRole("ADMIN") // Freigabe nur mit einer bestimmten Role
+                .antMatchers("/user/**").hasRole("USER") // Freigabe nur mit einer bestimmten Role
                 .anyRequest().authenticated() // Alle anderen erfordern Anmeldung
                 .and()
                 .logout().logoutUrl("/logout")
