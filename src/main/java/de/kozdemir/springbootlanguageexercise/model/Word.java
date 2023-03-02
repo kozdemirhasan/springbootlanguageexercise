@@ -1,11 +1,12 @@
 package de.kozdemir.springbootlanguageexercise.model;
 
+import lombok.*;
 
-import lombok.Data;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,13 +18,16 @@ public class Word implements Serializable {
     @GeneratedValue
     private long id;
 
-    private String word;
+//    @Column(length = 100, unique = true)
+    @NotEmpty
+    private String wordMother;
 
+    @NotEmpty
     private String wordMeaning;
 
-    private String mLang;
+    private String motherLanguage;
 
-    private String tLang;
+    private String targetLanguage;
 
     private String level;
 

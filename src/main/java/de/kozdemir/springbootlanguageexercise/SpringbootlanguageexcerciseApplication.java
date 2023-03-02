@@ -60,6 +60,16 @@ public class SpringbootlanguageexcerciseApplication implements CommandLineRunner
             user.setMotherLanguage(Languages.ENGLISH);
             user.setTargetLanguage(Languages.SPANISH);
             userRepository.save(user);
+
+            user = new User();
+            user.setUsername("a.demir");
+            user.setEmail("a.demir@protonmail.com");
+            user.setPassword(passwordEncoder.encode("Geheim#1234"));
+            user.setRole(UserRole.USER);
+            user.setStatus(UserStatus.ACTIVE);
+            user.setMotherLanguage(Languages.SPANISH);
+            user.setTargetLanguage(Languages.TURKISH);
+            userRepository.save(user);
         }
 
 
