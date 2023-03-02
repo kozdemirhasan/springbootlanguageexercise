@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers( "/login/**", "/register/**", "/activate/**", "/forgot/**", "/h2-console/**").permitAll() // Frei zugänglich
                 .antMatchers("/admin/**").hasRole("ADMIN") // Freigabe nur mit einer bestimmten Role
-                .antMatchers("/user/**").hasRole("USER") // Freigabe nur mit einer bestimmten Role
+                .antMatchers("/user/**","/word/**").hasRole("USER") // Freigabe nur mit einer bestimmten Role
                 .anyRequest().authenticated() // Alle anderen erfordern Anmeldung
                 .and()
                 .logout().logoutUrl("/logout")

@@ -1,71 +1,95 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://thymeleaf.org"
-                xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-  <head th:fragment="head(title)">
+<head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>[[${title}]]</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
-  </head>
+    <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 <body>
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="mainNav">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="mainNav">
     <div class="container">
-      <ul class="nav">
-        <li class="nav-item">
-          <a href="/" class="nav-link">Startseite</a>
-        </li>
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-          <a href="/login" class="nav-link">Login</a>
-        </li>
+        <ul class="nav">
+            <li class="nav-item">
+                <a href="/" class="nav-link">Startseite</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a href="/login" class="nav-link">Login</a>
+            </li>
 
-       <!-- ADMIN  -->
-        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN')">
-          <a href="/admin" class="nav-link">Admin</a>
-        </li>
+            <!-- ADMIN  -->
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN')">
+                <a href="/admin" class="nav-link">Admin</a>
+            </li>
 
-        <li class="nav-item" sec:authorize="hasAnyRole('ADMIN')">
-          <a href="/admin" class="nav-link">Admin islemleri</a>
-        </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN')">
+                <a href="/admin" class="nav-link">Admin islemleri</a>
+            </li>
 
-        <!-- USER  -->
-        <li class="nav-item" sec:authorize="hasAnyRole('USER')">
-          <a href="/user/words" class="nav-link">My Words</a>
-        </li>
+            <!-- USER  -->
+            <li class="nav-item dropdown" sec:authorize="hasAnyRole('USER')">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    My Dashboard
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/word/new">My words</a></li>
+                    <li><a class="dropdown-item" href="/word/sentence">My last 10 words</a></li>
+                    <li><a class="dropdown-item" href="/word/sentence">My sentences</a></li>
 
-        <li class="nav-item dropdown" sec:authorize="hasAnyRole('USER')">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-             aria-expanded="false">
-            Add
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/user/new">Add word</a></li>
-            <li><a class="dropdown-item" href="/user/sentence">Add sentence</a></li>
-          </ul>
-        </li>
-
-        <li class="nav-item" sec:authorize="hasAnyRole('USER')">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn mx-3 btn-outline-success" type="submit">Search</button>
-          </form>
-
-        </li>
+                </ul>
+            </li>
 
 
-        <!-- LOGOUT -->
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a href="/logout" class="nav-link">Logout</a>
-        </li>
+            <li class="nav-item dropdown" sec:authorize="hasAnyRole('USER')">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    Add
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/word/new">Add word</a></li>
+                    <li><a class="dropdown-item" href="/word/sentence">Add sentence</a></li>
+                </ul>
+            </li>
 
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-          <a href="/register" class="nav-link">Registrieren</a>
-        </li>
-      </ul>
+            <li class="nav-item" sec:authorize="hasAnyRole('USER')">
+                <form action="/word/search" method="get" class="d-flex" role="search">
+
+                    <div>
+                        <input class="form-control me-2" type="search" name="keyword" placeholder="Search"
+                               aria-label="Search">
+                      <!--
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                   checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">in only mother language</label>
+                        </div>
+                        -->
+                    </div>
+
+                    <button class="btn mx-3 btn-outline-success" type="submit">Search</button>
+
+                </form>
+            </li>
+
+            <!-- LOGOUT -->
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a href="/logout" class="nav-link">Logout</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a href="/register" class="nav-link">Registrieren</a>
+            </li>
+        </ul>
     </div>
-  </nav>
+</nav>
 
 </body>
 </html>

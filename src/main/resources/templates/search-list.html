@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentences</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
+<header class="container"></header>
+
+<body>
+
+<nav th:replace="fragments.html :: mainNav"></nav>
+
+<main class="container my-3">
+    <div class="row">
+        <div class="col-sm-6">
+
+            <h4 th:text="${keyword}">Search list</h4>
+
+
+            <div th:if="${words.size()>0} ">
+                <table class="table">
+
+                    <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Meaning</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="w : ${words}">
+                        <td th:text="${w.wordMother}"></td>
+                        <td th:text="${w.wordMeaning}"></td>
+                        <td>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Details
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/word/new">Add new sentence</a></li>
+                                    <li><a class="dropdown-item" href="/word/sentence">Show sentences</a></li>
+                                    <li><a class="dropdown-item" href="/word/sentence">Add my list</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<footer>
+
+</footer>
+
+
+<script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
