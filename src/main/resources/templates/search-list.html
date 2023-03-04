@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/webjars/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="script.js"></script>
+
 </head>
 
 
@@ -20,12 +22,12 @@
     <div class="row">
         <div class="col-sm-6">
 
-            <h4 th:text="${keyword}">Search list</h4>
-
+            <h4 class="alert-danger" th:text="${keyword}"></h4>
+            <h4 th:text="${error}"></h4>
+            <h5 th:text="${emp}"></h5>
 
             <div th:if="${words.size()>0} ">
                 <table class="table">
-
                     <thead>
                     <tr>
                         <th>Word</th>
@@ -36,8 +38,8 @@
 
                     <tbody>
                     <tr th:each="w : ${words}">
-                        <td th:text="${w.wordMother}"></td>
                         <td th:text="${w.wordMeaning}"></td>
+                        <td th:text="${w.wordMother}"></td>
                         <td>
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -45,9 +47,32 @@
                                     Details
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/word/new">Add new sentence</a></li>
+
+                                    <li>
+                                        <form th:action="@{/sentence/new}" method="get">
+                                            <input type="hidden" name="id" th:value="${w.id}">
+                                            <button class="btn btn-light">Add new sentence</button>
+                                        </form>
+                                    </li>
+
+                                    <li>
+                                        <form th:action="@{/sentence/details}" method="get">
+                                            <input type="hidden" name="id" th:value="${w.id}">
+                                            <button class="btn btn-light">Show sentences</button>
+                                        </form>
+                                    </li>
+
+                                    <li>
+                                        <form th:action="@{/card/add}" method="get">
+                                            <input type="hidden" name="id" th:value="${w.id}">
+                                            <button class="btn btn-link">Add my list</button>
+                                        </form>
+                                    </li>
+
+                                    <!--
                                     <li><a class="dropdown-item" href="/word/sentence">Show sentences</a></li>
                                     <li><a class="dropdown-item" href="/word/sentence">Add my list</a></li>
+                                    -->
                                 </ul>
                             </div>
                         </td>
@@ -60,13 +85,74 @@
         </div>
     </div>
 
+    <!-- MODAL START-->
+   <!--
+    <section class="modal hidden">
+        <div class="flex">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A amet at culpa enim eveniet excepturi facere
+                hic nisi provident voluptatibus?</p>
+            <button class="btn-close">⨉</button>
+        </div>
+        <div>
+            <h3>Stay in touch</h3>
+            <p>
+                This is a dummy newsletter form so don't bother trying to test it. Not
+                that I expect you to, anyways. :)
+            </p>
+        </div>
+
+        <input type="email" id="email" placeholder="brendaneich@js.com"/>
+        <button class="btn">Do Something</button>
+    </section>
+
+    <div class="overlay hidden"></div>
+    <button class="btn btn-open">Open Modal</button>
+-->
+    <!-- MODAL END -->
+
 </main>
 
 <footer>
-
 </footer>
 
-
 <script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+<script src="/webjars/jquery/3.6.3/jquery.min.js"></script>
+
+<script>
+    const modal = document.querySelector(".modal");
+    const overlay = document.querySelector(".overlay");
+    const openModalBtn = document.querySelector(".btn-open");
+    const closeModalBtn = document.querySelector(".btn-close");
+
+    // close modal function
+    const closeModal = function () {
+        modal.classList.add("hidden");
+        overlay.classList.add("hidden");
+    };
+
+    // close the modal when the close button and overlay is clicked
+    closeModalBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
+
+    // close modal when the Esc key is pressed
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            closeModal();
+        }
+    });
+
+    // open modal function
+    const openModal = function () {
+        modal.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+    };
+    // open modal event
+    openModalBtn.addEventListener("click", openModal);
+
+</script>
+
+
 </body>
+
+
 </html>

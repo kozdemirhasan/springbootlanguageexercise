@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
@@ -25,6 +26,7 @@ public class WordController {
 
     @Autowired
     WordService wordService;
+
     @Autowired
     WordRepository wordRepository;
 
@@ -68,9 +70,28 @@ public class WordController {
 
     @GetMapping("/search")
     public String search(String keyword, Model model) {
-        model.addAttribute("keyword", "Search: " + keyword);
-        model.addAttribute("words", wordService.wordSearch(keyword));
 
-        return "search-list";
+        if (keyword != "") {
+            model.addAttribute("keyword", "Search: " + keyword);
+            model.addAttribute("words", wordService.wordSearch(keyword));
+
+            if (wordService.wordSearch(keyword).size() == 0) {
+                model.addAttribute("emp", "No results");
+            }
+
+            return "search-list";
+        } else {
+            model.addAttribute("error", "Please enter the search word..");
+            return "search-list";
+        }
+    }
+
+    @GetMapping("added")
+    public String added(Model model) {
+        List<Word> userAddedWords = wordService.userAddedWords();
+        model.addAttribute("title", "The words I added.");
+        model.addAttribute("userAddedWords", userAddedWords);
+
+        return "user-word-list";
     }
 }

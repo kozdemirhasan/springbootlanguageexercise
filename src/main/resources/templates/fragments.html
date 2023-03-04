@@ -37,16 +37,17 @@
             <li class="nav-item dropdown" sec:authorize="hasAnyRole('USER')">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
-                    My Dashboard
+                    Dashboard
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/word/new">My words</a></li>
-                    <li><a class="dropdown-item" href="/word/sentence">My last 10 words</a></li>
-                    <li><a class="dropdown-item" href="/word/sentence">My sentences</a></li>
+                    <li><a class="dropdown-item" href="#">My desk</a></li>
+                    <li><a class="dropdown-item" href="/card/cards">My word list</a></li>
+                    <li><a class="dropdown-item" href="#">Last 20 words</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">My added words</a></li>
 
                 </ul>
             </li>
-
 
             <li class="nav-item dropdown" sec:authorize="hasAnyRole('USER')">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -55,15 +56,14 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/word/new">Add word</a></li>
-                    <li><a class="dropdown-item" href="/word/sentence">Add sentence</a></li>
+                    <li><a class="dropdown-item" href="#">Add sentence</a></li>
                 </ul>
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyRole('USER')">
                 <form action="/word/search" method="get" class="d-flex" role="search">
-
                     <div>
-                        <input class="form-control me-2" type="search" name="keyword" placeholder="Search"
+                        <input class="form-control me-2" type="search" name="keyword" placeholder="Search word"
                                aria-label="Search">
                       <!--
                         <div class="form-check form-switch">
@@ -73,9 +73,7 @@
                         </div>
                         -->
                     </div>
-
                     <button class="btn mx-3 btn-outline-success" type="submit">Search</button>
-
                 </form>
             </li>
 

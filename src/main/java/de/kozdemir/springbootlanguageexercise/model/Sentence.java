@@ -5,10 +5,13 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Entity@Data
+@Entity
+@Data
+@Table(name = "SENTENCES")
 public class Sentence implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,8 +21,10 @@ public class Sentence implements Serializable {
     @Column(name = "SENTENCE_ID")
     private long id;
 
-    private String sentence;
+    @NotEmpty
+    private String sentenceMother;
 
+    @NotEmpty
     private String sentenceMeaning;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentences</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="script.js"></script>
+
+</head>
+
+
+<header class="container"></header>
+
+<body>
+
+<nav th:replace="fragments.html :: mainNav"></nav>
+
+<main class="container my-3">
+    <div class="row">
+        <div class="col-sm-6">
+
+            <h3 th:text="${title}"></h3>
+
+
+            <div class="col-sm-6">
+                <h4 class="alert-primary" th:text="${addWord}"></h4>
+                <div th:if="${success}" class="alert alert-success">Es wurde erfolgreich zu Ihrer Wortliste
+                    hinzugefügt.
+                </div>
+                <div th:if="${error}" class="alert alert-danger">Bereits zur Wortliste hinzugefügt!.</div>
+            </div>
+
+            <div th:if="${userCardList.size()>0} ">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Meaning</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="w : ${userCardList}">
+                        <td th:text="${w.word.wordMeaning}"></td>
+                        <td th:text="${w.word.wordMother}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</main>
+
+<footer>
+</footer>
+
+<script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+
+</html>

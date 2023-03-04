@@ -23,18 +23,11 @@
             <h3>Add Word</h3>
 
             <div th:if="${success}" class="alert alert-success">Erfolgreich registriert.</div>
-            <div th:if="${error}" class="alert alert-danger">Das angeforderte Wort ist bereits gespeichert</div>
+            <div th:if="${error}" class="alert alert-danger">Das Wort ist bereits gespeichert</div>
 
 
             <form th:action="@{/word/save}" method="post" th:object="${word}">
                 <div class="row mb-4">
-
-                    <div class="col">
-                        <label class="form-label" for="wordMother" th:text="${motherLanguage}"></label>
-                        <input type="text" class="form-control" th:field="*{wordMother}"
-                               placeholder="the word in your mother language">
-                        <p th:if="${#fields.hasErrors('wordMother')}" th:errors="*{wordMother}" class="text-danger"></p>
-                    </div>
 
                     <div class="col">
                         <label class="form-label" for="wordMeaning" th:text="${targetLanguage}"></label>
@@ -43,6 +36,15 @@
                         <p th:if="${#fields.hasErrors('wordMeaning')}" th:errors="*{wordMeaning}"
                            class="text-danger"></p>
                     </div>
+
+                    <div class="col">
+                        <label class="form-label" for="wordMother" th:text="${motherLanguage}"></label>
+                        <input type="text" class="form-control" th:field="*{wordMother}"
+                               placeholder="the word in your mother language">
+                        <p th:if="${#fields.hasErrors('wordMother')}" th:errors="*{wordMother}" class="text-danger"></p>
+                    </div>
+
+
 
                     <div class="col">
                         <label for="level" class="form-label">Level</label>

@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "WORDS")
 public class Word implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +44,12 @@ public class Word implements Serializable {
 
     @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sentence> sentences;
+
+    //Word ve Card ararsinda ManyToMany iliskisi var
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Card> cards;
+
+
 
 
 }

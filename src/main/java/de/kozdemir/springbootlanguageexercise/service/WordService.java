@@ -1,7 +1,9 @@
 package de.kozdemir.springbootlanguageexercise.service;
 
+import de.kozdemir.springbootlanguageexercise.model.Card;
 import de.kozdemir.springbootlanguageexercise.model.Languages;
 import de.kozdemir.springbootlanguageexercise.model.Word;
+import de.kozdemir.springbootlanguageexercise.repository.CardRepository;
 import de.kozdemir.springbootlanguageexercise.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,11 @@ public class WordService implements Serializable {
     @Autowired
     WordRepository wordRepository;
 
+    @Autowired
+    CardRepository cardRepository;
 
     public Word addWord(Word word) {
         Word w = wordControll(word);
-//
-//        System.out.println(w.getWordMother());
-//        System.out.println(w.getWordMeaning());
-//        System.out.println(w.getLevel());
-
         if (w == null) {
             word.setMotherLanguage(loginService.getUser().getMotherLanguage());
             word.setTargetLanguage(loginService.getUser().getTargetLanguage());
@@ -51,4 +50,12 @@ public class WordService implements Serializable {
                 keyword , keyword, loginService.getUser().getMotherLanguage()  , loginService.getUser().getTargetLanguage());
     }
 
+//    public List<Card> getUserCardList(long id) {
+//        List<Card> userCards =  cardRepository.findByUserId(id);
+//        return  userCards;
+//    }
+
+    public List<Word> userAddedWords() {
+        return  wordRepository.findByCreatedUser(loginService.getUser().getId());
+    }
 }

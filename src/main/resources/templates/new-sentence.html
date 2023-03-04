@@ -19,31 +19,36 @@
     <div class="row">
         <div class="col-sm-6">
 
-            <h3>New Sentence</h3>
+            <h4 th:text="${titleAddSentence}"></h4>
 
-            <div th:if="${success}" class="alert alert-success">Erfolgreich registriert. </div>
+            <form th:action="@{/sentence/save}" method="post" th:object="${sentence}">
+                <div class="row mb-4">
 
-            <form th:action="@{/user/sentence}" method="post" th:object="${sentence}">
+                    <input type="hidden" name="wordId" th:value="${wordId}">
 
-                <div class="row my-4">
+
                     <div class="col">
-                        <label for="sentence" class="form-label">Sentence</label>
-                        <input id="sentence" name="sentence" type="text" class="form-control"
-                               th:placeholder="${motherLanguage}" aria-label="First name">
+                        <input type="text" class="form-control"  th:field="*{sentenceMeaning}" placeholder="meaning in foreign language">
+                        <p th:if="${#fields.hasErrors('sentenceMeaning')}" th:errors="*{sentenceMeaning}" class="text-danger"></p>
                     </div>
+
+
                     <div class="col">
-                        <label for="sentenceMeaning" class="form-label">Sentence Meaning</label>
-                        <input id="sentenceMeaning" name="sentenceMeaning" type="text" class="form-control"
-                               th:placeholder="${targetLanguage}" aria-label="Last name">
+                        <input type="text" class="form-control"  th:field="*{sentenceMother}"  placeholder="the sentence in your mother language">
+                        <p th:if="${#fields.hasErrors('sentenceMother')}" th:errors="*{sentenceMother}" class="text-danger"></p>
                     </div>
+
                 </div>
-
                 <button class="btn btn-success">Add new sentence</button>
 
             </form>
+
+
         </div>
     </div>
+
 </main>
+
 
 <footer>
 

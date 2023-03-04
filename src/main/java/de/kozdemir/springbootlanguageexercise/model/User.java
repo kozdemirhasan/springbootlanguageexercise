@@ -7,18 +7,19 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "app_users") // User Objekt mit der Tabelle app_users aus der DB verbinden
+@Table(name = "APP_USERS") // User Objekt mit der Tabelle app_users aus der DB verbinden
 public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    // @Column(name = "knr") // id mit der Spalte knr in der DB verbinden
+    @Column(name = "USER_ID")
     private long id;
 
     @Column(length = 50, unique = true)
@@ -41,6 +42,12 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Languages targetLanguage;
+
+    //Bir user in bircok karti olabilir, bir kartinda bircok user i olabilir
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Card> cards;
+
 
 
 }
