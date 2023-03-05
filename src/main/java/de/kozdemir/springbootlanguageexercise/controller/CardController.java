@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -54,10 +55,23 @@ public class CardController {
 
     @GetMapping("cards")
     public String userCardList(Model model) {
+
+        List<Card> cl = cardService.getUserCardList(loginService.getUser().getId());
+        for (Card c : cl   ) {
+            System.out.println(c.getLearnStatus());
+
+        }
         model.addAttribute("userCardList", cardService.getUserCardList(loginService.getUser().getId()));
         model.addAttribute("title", "My Word List");
         return "user-word-list";
     }
 
+
+    @GetMapping("status/little")
+    public String statuslittle(Long id, Model model) {
+
+        System.out.println("WORD ID:"+ id);
+        return "user-word-list";
+    }
 
 }

@@ -30,6 +30,7 @@ public class Card implements Serializable {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lastTime;
 
+    @Enumerated(EnumType.STRING)
     private LearnStatus learnStatus;
 
     private String description;

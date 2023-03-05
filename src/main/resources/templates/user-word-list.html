@@ -5,7 +5,7 @@
     <title>Sentences</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/webjars/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/6.3.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="script.js"></script>
 
@@ -33,27 +33,107 @@
                 <div th:if="${error}" class="alert alert-danger">Bereits zur Wortliste hinzugefügt!.</div>
             </div>
 
-            <div th:if="${userCardList.size()>0} ">
+            <td th:if="${userCardList.size()>0} ">
                 <table class="table">
                     <thead>
                     <tr>
                         <th>Word</th>
                         <th>Meaning</th>
+                        <th>Status</th>
+
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="w : ${userCardList}">
+
                         <td th:text="${w.word.wordMeaning}"></td>
                         <td th:text="${w.word.wordMother}"></td>
+
+
+                        <td th:if="${w.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).NOTKNOW}">
+                            <div class="dropdown">
+                                <input type="hidden" name="id" th:value="${w.id}">
+                                <button onclick="myFunction()" type="submit" class="btn btn-danger "
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">
+                                        <button type="submit" class="btn btn-success "
+                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                class="fa-solid fa-check-double"></i>
+                                        </button>
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="#">
+                                        <button type="submit" class="btn btn-warning "
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </td>
+
+                        <td th:if="${w.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).LITTLE}">
+                            <div class="dropdown">
+                                <input type="hidden" name="id" th:value="${w.id}">
+                                <button onclick="myFunction()" type="submit" class="btn btn-warning "
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">
+                                        <button type="submit" class="btn btn-success "
+                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                class="fa-solid fa-check-double"></i>
+                                        </button>
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="#">
+                                        <button type="submit" class="btn btn-danger "
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </td>
+
+                        <td th:if="${w.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).KNOW}">
+
+                            <div class="dropdown">
+
+                                <button onclick="myFunction()" type="submit" class="btn btn-success "
+                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="fa-solid fa-check-double"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <form th:action="@{/card/status/little}" method="get">
+                                        <input type="hidden" name="id" th:value="${w.word.id}">
+                                        <li><a class="dropdown-item" href="#" >
+                                            <button type="submit" class="btn btn-warning "
+                                                    data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                    class="fa-solid fa-check"></i>
+                                            </button>
+                                        </a></li>
+                                    </form>
+                                    <form th:action="@{/card/status/notknow}" method="post">
+                                        <input type="hidden" name="id" th:value="${w.word.id}">
+                                        <li><a class="dropdown-item" href="#">
+                                            <button type="submit" class="btn btn-danger "
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-minus"></i>
+                                            </button>
+                                        </a></li>
+                                    </form>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
-            </div>
-
-
         </div>
     </div>
-
+    </div>
 
 </main>
 
@@ -61,6 +141,28 @@
 </footer>
 
 <script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
 </body>
 
 

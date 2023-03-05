@@ -39,7 +39,7 @@ public class CardService implements Serializable {
         card.setWord(word);
         card.setCreatedAt(LocalDateTime.now());
         card.setLastTime(LocalDateTime.now());
-        card.setLearnStatus(LearnStatus.DONTKNOW);
+        card.setLearnStatus(LearnStatus.NOTKNOW);
 
         if(cardControll(card)){
             return cardRepository.save(card);
