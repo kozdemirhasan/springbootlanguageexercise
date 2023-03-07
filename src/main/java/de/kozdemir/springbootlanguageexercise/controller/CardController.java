@@ -1,7 +1,7 @@
 package de.kozdemir.springbootlanguageexercise.controller;
 
 import de.kozdemir.springbootlanguageexercise.model.Card;
-import de.kozdemir.springbootlanguageexercise.model.Word;
+import de.kozdemir.springbootlanguageexercise.model.LearnStatus;
 import de.kozdemir.springbootlanguageexercise.repository.WordRepository;
 import de.kozdemir.springbootlanguageexercise.service.CardService;
 import de.kozdemir.springbootlanguageexercise.service.LoginService;
@@ -37,7 +37,6 @@ public class CardController {
     public String add(Long id, Model model) {
         Card card = cardService.addCard(id);
 
-
         if (card != null) {
             model.addAttribute("addWord", card.getWord().getWordMeaning());
             model.addAttribute("success", true); // success
@@ -56,22 +55,82 @@ public class CardController {
     @GetMapping("cards")
     public String userCardList(Model model) {
 
-        List<Card> cl = cardService.getUserCardList(loginService.getUser().getId());
-        for (Card c : cl   ) {
-            System.out.println(c.getLearnStatus());
-
-        }
         model.addAttribute("userCardList", cardService.getUserCardList(loginService.getUser().getId()));
         model.addAttribute("title", "My Word List");
         return "user-word-list";
     }
 
 
-    @GetMapping("status/little")
-    public String statuslittle(Long id, Model model) {
+    // Change Status
+    @PostMapping("status/dontknow")
+    public String statusDontknow(Long id, Model model) {
 
-        System.out.println("WORD ID:"+ id);
+        if (cardService.changeStatusTo(id, LearnStatus.NOTKNOW) != null) {
+            model.addAttribute("userCardList", cardService.getUserCardList(loginService.getUser().getId()));
+            model.addAttribute("title", "My Word List");
+
+            return "user-word-list";
+        }
+        model.addAttribute("errorOccurred", true);
         return "user-word-list";
     }
+
+    @PostMapping("status/little")
+    public String statusLittle(Long id, Model model) {
+
+        if (cardService.changeStatusTo(id, LearnStatus.LITTLE) != null) {
+            model.addAttribute("userCardList", cardService.getUserCardList(loginService.getUser().getId()));
+            model.addAttribute("title", "My Word List");
+
+            return "user-word-list";
+        }
+        model.addAttribute("errorOccurred", true);
+        return "user-word-list";
+    }
+
+    @PostMapping("status/know")
+    public String statusKnow(Long id, Model model) {
+
+        if (cardService.changeStatusTo(id, LearnStatus.KNOW) != null) {
+            model.addAttribute("userCardList", cardService.getUserCardList(loginService.getUser().getId()));
+            model.addAttribute("title", "My Word List");
+            return "user-word-list";
+        }
+        model.addAttribute("errorOccurred", true);
+        return "user-word-list";
+    }
+
+    //change learn seite status
+    @GetMapping("learn-status/dontknow")
+    public void statusLearnDontknow(Long id, Model model) {
+        if (cardService.changeStatusTo(id, LearnStatus.NOTKNOW) != null) {
+           dontKnowCards(model);
+        }
+    }
+
+    @GetMapping("learn-status/little")
+    public String statusLearnLittle(Long id, Model model) {
+        if (cardService.changeStatusTo(id, LearnStatus.LITTLE) != null) {
+          return "redirect:/card/dont-know";
+        }
+        return null;
+    }
+
+    @GetMapping("learn-status/know")
+    public String statusLearnKnow(Long id, Model model) {
+        if (cardService.changeStatusTo(id, LearnStatus.KNOW) != null) {
+            return "redirect:/card/dont-know";
+        }
+        return null;
+    }
+
+    @GetMapping("dont-know")
+    public String dontKnowCards(Model model) {
+        List<Card> lastEightCards = cardService.dontKnowCards();
+        model.addAttribute("lastEightCards", lastEightCards);
+        model.addAttribute("last8", "Last 8 words");
+        return "learning-time";
+    }
+
 
 }

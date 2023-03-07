@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vocabulary learning v.1</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="script.js"></script>
+
+</head>
+
+
+<header class="container"></header>
+
+<body>
+
+<nav th:replace="fragments.html :: mainNav"></nav>
+
+<main class="container my-3">
+    <div class="row">
+        <div class="col-12">
+
+            <h3 class="fw-bold fst-italic text-primary" th:if="${userAddedWords.size()>0} " th:text="${title}"></h3>
+            <h3 th:if="${userAddedWords.size()==0} ">There are no words you have added so far</h3>
+
+            <td th:if="${userAddedWords.size()>0} ">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="w : ${userAddedWords}">
+                        <td class="fw-bold" th:text="${w.wordMeaning}"></td>
+                        <td class="text-opacity-50 fst-italic" th:text="${w.wordMother}"></td>
+                        <td>
+                            <button type="submit" class="btn mx-3 btn-outline-info btn-sm ">Info</button>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn mx-3 btn-outline-primary btn-sm ">Add Sentence</button>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+        </div>
+    </div>
+    </div>
+
+</main>
+
+<footer>
+</footer>
+
+<script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+
+</html>

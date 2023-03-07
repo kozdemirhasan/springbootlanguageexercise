@@ -12,5 +12,5 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     List<Word> findByWordMotherContainingIgnoreCaseOrWordMeaningContainingIgnoreCaseAndMotherLanguageAndTargetLanguage(String wordMother, String wordMeaning,
                                                                                                                        Languages motherLanguage, Languages targetLanguage);
 
-    List<Word> findByCreatedUser(long createdUser);
+    List<Word> findByCreatedUserOrderByCreatedAtDesc(long createdUser);
 }

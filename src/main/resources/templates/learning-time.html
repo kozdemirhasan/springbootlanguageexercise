@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vocabulary learning v.1</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @import url(//fonts.googleapis.com/css?family=Lato:400,900);
+        @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+
+        .info-card {
+            float: left;
+            margin: 10px;
+            -webkit-perspective: 600px;
+        }
+
+        .front, .back {
+            background: #FFF;
+            border-radius: 10px;
+            transition: -webkit-transform 1s;
+            -webkit-transform-style: preserve-3d;
+            -webkit-backface-visibility: hidden;
+            border: 1px solid black;
+        }
+
+        .front {
+            overflow: hidden;
+            width: 250px;
+            height: 330px;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .back {
+            padding: 20px;
+            padding-top: 0px;
+            width: 250px;
+            height: 330px;
+            -webkit-transform: rotateY(-180deg);
+            overflow: scroll;
+        }
+
+        .info-card:hover .back {
+            -webkit-transform: rotateY(0);
+        }
+
+        .info-card:hover .front {
+            -webkit-transform: rotateY(180deg);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        /* Social buttons */
+        .social {
+            list-style: none;
+            padding: 0px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .social a {
+            position: relative;
+            display: inline-block;
+            min-width: 40px;
+            padding: 10px 0px;
+            margin: 0px 5px;
+            overflow: hidden;
+            text-align: center;
+            background-color: rgb(215, 215, 215);
+            border-radius: 40px;
+        }
+
+
+        a.social-icon {
+            text-decoration: none !important;
+            box-shadow: 0px 0px 1px rgb(51, 51, 51);
+            box-shadow: 0px 0px 1px rgba(51, 51, 51, 0.7);
+        }
+
+        a.social-icon:hover {
+            color: rgb(255, 255, 255) !important;
+        }
+
+        a.facebook {
+            color: rgb(59, 90, 154) !important;
+        }
+
+        a.facebook:hover {
+            background-color: rgb(59, 90, 154) !important;
+        }
+
+        a.twitter {
+            color: rgb(45, 168, 225) !important;
+        }
+
+        a.twitter:hover {
+            background-color: rgb(45, 168, 225) !important;
+        }
+
+        a.github {
+            color: rgb(51, 51, 51) !important;
+        }
+
+        a.github:hover {
+            background-color: rgb(51, 51, 51) !important;
+        }
+    </style>
+
+</head>
+
+<header class="container"></header>
+
+<body>
+
+<nav th:replace="fragments.html :: mainNav"></nav>
+
+<main class="container my-3">
+
+    <!--
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+
+            <div class="collapse navbar-collapse" id="navbarScroll">
+
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li>
+                        <select class="selectpicker">
+                            <option>I don't know</option>
+                            <option>I little know</option>
+                            <option>I know</option>
+                        </select>
+
+                    </li>
+                    <li>
+                        <select class="selectpicker">
+                            <option>Last 4 word</option>
+                            <option>Last 8 word</option>
+                            <option>Last 12 word</option>
+                        </select>
+                    </li>
+
+
+                    <li>
+                        <form th:action="@{/card/last-eight}" method="get">
+                            <input type="hidden" name="count">
+                            <button class="btn btn-secondary btn-sm">Start!</button>
+                        </form>
+                    </li>
+
+                </ul>
+
+
+            </div>
+        </div>
+    </nav>
+    -->
+
+    <h3 th:if="${lastEightCards.size == 0 }">Your study list is empty</h3>
+    <h4 class="text-secondary" th:if="${lastEightCards.size != 0 }">Words I don't know</h4>
+
+    <div th:if="${lastEightCards.size != 0 }" class="container">
+
+
+        <div class="row">
+
+            <div th:each ="card : ${lastEightCards}" class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="info-card" th:if="${card.id > 0 }">
+                    <div class="front d-flex justify-content-center">
+                        <h2 th:text="${card.getWord().getWordMeaning()}"></h2>
+                    </div>
+                    <div class="back">
+                        <h3 th:text="${card.getWord().getWordMother()}"></h3>
+
+                        <div th:if="${card.getWord().getSentences().size()==3}">
+                            <p th:text="${card.getWord().getSentences().get(0).getSentenceMeaning()
+                            + ' *** '+ card.getWord().getSentences().get(1).getSentenceMeaning()
+                                + ' *** '+ card.getWord().getSentences().get(2).getSentenceMeaning()}">
+                            </p>
+                        </div>
+
+                        <div th:if="${card.getWord().getSentences().size()==2}">
+                            <p th:text="${card.getWord().getSentences().get(0).getSentenceMeaning()
+                            + ' *** '+ card.getWord().getSentences().get(1).getSentenceMeaning()       }">
+                            </p>
+                        </div>
+                        <div th:if="${card.getWord().getSentences().size()==1}">
+                            <p th:text="${card.getWord().getSentences().get(0).getSentenceMeaning()    }">
+                            </p>
+                        </div>
+                        <div th:if="${card.getWord().getSentences().size()==0}">
+                            <p>No sentence </p>
+                        </div>
+
+                        <div class="social">
+
+                            <div th:if="${card.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).NOTKNOW}">
+                                <div class="wp-block-button is-style-fill">
+                                    <button class="btn btn-danger btn-sm d-inline"><i class="fa-solid fa-minus"></i>
+                                    </button>
+                                    <form class="d-inline" th:action="@{/card/learn-status/little}" method="get">
+                                        <input type="hidden" name="id"
+                                               th:value="${card.getWord().getId()}">
+                                        <button class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form class="d-inline" th:action="@{/card/learn-status/know}" method="get">
+                                        <input type="hidden" name="id"
+                                               th:value="${card.getWord().getId()}">
+                                        <button class="btn btn-outline-success btn-sm"><i
+                                                class="fa-solid fa-check-double"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div th:if="${card.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).LITTLE}">
+                                <div class="wp-block-button is-style-fill">
+                                    <form class="d-inline" th:action="@{/card/learn-status/dontknow}" method="get">
+                                        <input type="hidden" name="id"
+                                               th:value="${card.getWord().getId()}">
+                                        <button class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-warning btn-sm"><i class="fa-solid fa-check"></i></button>
+                                    <form class="d-inline" th:action="@{/card/learn-status/know}" method="get">
+                                        <input type="hidden" name="id"
+                                               th:value="${card.getWord().getId()}">
+                                        <button class="btn btn-outline-success btn-sm"><i
+                                                class="fa-solid fa-check-double"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div th:if="${card.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).KNOW}">
+                                <div class="wp-block-button is-style-fill">
+                                    <form class="d-inline" th:action="@{/card/learn-status/dontknow}" method="get">
+                                        <input type="hidden" name="id"
+                                               th:value="${card.getWord().getId()}">
+                                        <button class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </form>
+                                    <form class="d-inline" th:action="@{/card/learn-status/little}" method="get">
+                                        <input type="hidden" name="id"
+                                               th:value="${card.getWord().getId()}">
+                                        <button class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-success btn-sm"><i class="fa-solid fa-check-double"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+    <!--
+        <table class="table">
+            <thead class="hiding">
+            <tr class="hiding">
+                <th >Sütun 1</th>
+                <th>Sütun 2</th>
+                <th>Sütun 3</th>
+                <th>Sütun 4</th>
+
+
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="c : ${userCardList}">
+                <td>
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="info-card">
+                                <div class="front position-absolute top-50 start-0">
+                                    <h3>Hallo</h3>
+                                </div>
+                                <div class="back  position-absolute top-50 start-0">
+                                    <h2>Merhaba</h2>
+                                    <p>
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                        architect covalent e-tailers through viral Lorem ipsum dolor sit amet, con.
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                    </p>
+                                    <div class="social">
+                                        <a class="d-inline" href="">info</a>
+                                        <button class="btn btn-danger btn-sm d-inline"><i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-warning btn-sm d-inline"><i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm d-inline"><i
+                                                class="fa-solid fa-check-double"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="info-card">
+                                <div class="front position-absolute top-50 start-0">
+                                    <h3>Hallo</h3>
+                                </div>
+                                <div class="back  position-absolute top-50 start-0">
+                                    <h2>Merhaba</h2>
+                                    <p>
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                        architect covalent e-tailers through viral Lorem ipsum dolor sit amet, con.
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                    </p>
+                                    <div class="social">
+                                        <button class="btn btn-danger btn-sm d-inline"><i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-warning btn-sm d-inline"><i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm d-inline"><i
+                                                class="fa-solid fa-check-double"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="info-card">
+                                <div class="front position-absolute top-50 start-0">
+                                    <h3>Hallo</h3>
+                                </div>
+                                <div class="back  position-absolute top-50 start-0">
+                                    <h2>Merhaba</h2>
+                                    <p>
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                        architect covalent e-tailers through viral Lorem ipsum dolor sit amet, con.
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                    </p>
+                                    <div class="social">
+                                        <button class="btn btn-danger btn-sm d-inline"><i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-warning btn-sm d-inline"><i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm d-inline"><i
+                                                class="fa-solid fa-check-double"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="info-card">
+                                <div class="front position-absolute top-50 start-0">
+                                    <h3>Hallo</h3>
+                                </div>
+                                <div class="back  position-absolute top-50 start-0">
+                                    <h2>Merhaba</h2>
+                                    <p>
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                        architect covalent e-tailers through viral Lorem ipsum dolor sit amet, con.
+                                        Globally facilitate timely bandwidth vis-a-vis user friendly core competencies.
+                                        Uniquely
+                                    </p>
+                                    <div class="social">
+                                        <button class="btn btn-danger btn-sm d-inline"><i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-warning btn-sm d-inline"><i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm d-inline"><i
+                                                class="fa-solid fa-check-double"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    -->
+    <!--
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Header 1</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Light card title 1</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Header 2</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Light card title 2</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Header 3</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Light card title 3</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    -->
+
+</main>
+
+<footer>
+</footer>
+
+<script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelector(".card-flip").classList.toggle("flip");
+
+    /*
+     * Holder.js for demo image
+     * Just for demo purpose
+     */
+    Holder.addTheme('gray', {
+        bg: '#777',
+        fg: 'rgba(255,255,255,.75)',
+        font: 'Helvetica',
+        fontweight: 'normal'
+    });
+</script>
+</body>
+
+
+</html>

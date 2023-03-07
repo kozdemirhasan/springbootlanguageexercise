@@ -3,6 +3,7 @@ package de.kozdemir.springbootlanguageexercise.controller;
 import de.kozdemir.springbootlanguageexercise.model.Languages;
 import de.kozdemir.springbootlanguageexercise.model.Word;
 import de.kozdemir.springbootlanguageexercise.repository.WordRepository;
+import de.kozdemir.springbootlanguageexercise.service.CardService;
 import de.kozdemir.springbootlanguageexercise.service.LoginService;
 import de.kozdemir.springbootlanguageexercise.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +31,13 @@ public class WordController {
     @Autowired
     WordRepository wordRepository;
 
+    @Autowired
+    CardService cardService;
+
     @GetMapping("")
     public String userPage(Model model) {
         return "home";
     }
-
-//    @GetMapping("words")
-//    public String sentences(Model model) {
-//        return "user-words";
-//    }
-
 
     @GetMapping("new")
     public String add(Word word, Model model) {
@@ -56,11 +54,17 @@ public class WordController {
 
         if (result.hasErrors()) {
             return "new-word";
-        } else if (wordService.addWord(word) == null) {
+        }
+
+        Word addedWord = wordService.addWord(word);
+
+        if (addedWord == null) {
             model.addAttribute("error", true); // Dieses Word wurde schon hinzugefügt.
             return "new-word";
         } else {
             model.addAttribute("success", true); // success
+
+            cardService.addCard(addedWord.getId()); // add card for user
 
             word.setWordMother("");
             word.setWordMeaning("");
@@ -94,4 +98,21 @@ public class WordController {
 
         return "user-word-list";
     }
+
+    @GetMapping("user-words")
+    public String userAddedWords(Model model) {
+
+        List<Word> userAddedWords = wordService.userAddedWords();
+        model.addAttribute("title", "The words I added.");
+        model.addAttribute("userAddedWords", userAddedWords);
+
+        return "user-added-words";
+    }
+
+    @GetMapping("learn")
+    public String learn(Model model) {
+
+        return "learning-time";
+    }
+
 }

@@ -24,6 +24,9 @@ public class WordService implements Serializable {
     @Autowired
     CardRepository cardRepository;
 
+    @Autowired
+    CardService cardService;
+
     public Word addWord(Word word) {
         Word w = wordControll(word);
         if (w == null) {
@@ -33,11 +36,9 @@ public class WordService implements Serializable {
             word.setLevel(word.getLevel());
             word.setCreatedUser(loginService.getUser().getId());
 
-            return wordRepository.save(word);
-
-        } else {
-            return null;
+           return wordRepository.save(word); // add new word
         }
+        return null;
     }
 
     public Word wordControll(Word word) {
@@ -47,15 +48,10 @@ public class WordService implements Serializable {
     public List<Word> wordSearch(String keyword) {
 
         return wordRepository.findByWordMotherContainingIgnoreCaseOrWordMeaningContainingIgnoreCaseAndMotherLanguageAndTargetLanguage(
-                keyword , keyword, loginService.getUser().getMotherLanguage()  , loginService.getUser().getTargetLanguage());
+                keyword, keyword, loginService.getUser().getMotherLanguage(), loginService.getUser().getTargetLanguage());
     }
 
-//    public List<Card> getUserCardList(long id) {
-//        List<Card> userCards =  cardRepository.findByUserId(id);
-//        return  userCards;
-//    }
-
     public List<Word> userAddedWords() {
-        return  wordRepository.findByCreatedUser(loginService.getUser().getId());
+        return wordRepository.findByCreatedUserOrderByCreatedAtDesc(loginService.getUser().getId());
     }
 }

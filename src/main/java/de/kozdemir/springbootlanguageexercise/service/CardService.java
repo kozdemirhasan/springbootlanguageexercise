@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +42,7 @@ public class CardService implements Serializable {
         card.setLastTime(LocalDateTime.now());
         card.setLearnStatus(LearnStatus.NOTKNOW);
 
-        if(cardControll(card)){
+        if (cardControll(card)) {
             return cardRepository.save(card);
         }
         return null;
@@ -56,7 +57,19 @@ public class CardService implements Serializable {
 
 
     public List<Card> getUserCardList(long id) {
-       List<Card> userCards =  cardRepository.findByUserId(id);
-       return  userCards;
+        List<Card> userCards = cardRepository.findByUserId(id);
+        return userCards;
+    }
+
+    public Card changeStatusTo(Long id, LearnStatus status) {
+        Card c = cardRepository.findByUserIdAndWordId(loginService.getUser().getId(), id);
+        c.setLearnStatus(status);
+        c.setCreatedAt(LocalDateTime.now()); // Date update
+        return cardRepository.save(c);
+    }
+
+    public List<Card> dontKnowCards() {
+        List<Card> dontKnowCards = cardRepository.findByUserIdAndLearnStatusOrderByCreatedAtDesc(loginService.getUser().getId(), LearnStatus.NOTKNOW);
+        return dontKnowCards;
     }
 }

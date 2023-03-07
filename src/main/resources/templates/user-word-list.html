@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sentences</title>
+    <title>Vocabulary learning v.1</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/webjars/font-awesome/6.3.0/css/all.min.css">
@@ -20,10 +20,9 @@
 
 <main class="container my-3">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-12">
 
-            <h3 th:text="${title}"></h3>
-
+            <h3 class="fw-bold fst-italic text-primary" th:text="${title}"></h3>
 
             <div class="col-sm-6">
                 <h4 class="alert-primary" th:text="${addWord}"></h4>
@@ -37,97 +36,104 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Word</th>
-                        <th>Meaning</th>
-                        <th>Status</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+
 
                     </tr>
                     </thead>
+
                     <tbody>
                     <tr th:each="w : ${userCardList}">
 
-                        <td th:text="${w.word.wordMeaning}"></td>
-                        <td th:text="${w.word.wordMother}"></td>
+                        <td class="fw-bold" th:text="${w.word.wordMeaning}"></td>
+                        <td class="text-opacity-50 fst-italic" th:text="${w.word.wordMother}"></td>
 
+                        <div th:if="${errorOccurred}" class="alert alert-danger">An error occurred</div>
 
                         <td th:if="${w.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).NOTKNOW}">
-                            <div class="dropdown">
-                                <input type="hidden" name="id" th:value="${w.id}">
-                                <button onclick="myFunction()" type="submit" class="btn btn-danger "
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-minus"></i>
+                            <div class="wp-block-button is-style-fill">
+                                <button class="btn btn-danger btn-sm d-inline"><i class="fa-solid fa-minus"></i>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">
-                                        <button type="submit" class="btn btn-success "
-                                                data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                class="fa-solid fa-check-double"></i>
-                                        </button>
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="#">
-                                        <button type="submit" class="btn btn-warning "
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-check"></i>
-                                        </button>
-                                    </a></li>
-                                </ul>
+                                <form class="d-inline" th:action="@{/card/status/little}" method="post">
+                                    <input type="hidden" name="id" th:value="${w.word.id}">
+                                    <button class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-check"></i>
+                                    </button>
+                                </form>
+                                <form class="d-inline" th:action="@{/card/status/know}" method="post">
+                                    <input type="hidden" name="id" th:value="${w.word.id}">
+                                    <button class="btn btn-outline-success btn-sm"><i
+                                            class="fa-solid fa-check-double"></i></button>
+                                </form>
                             </div>
                         </td>
-
                         <td th:if="${w.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).LITTLE}">
-                            <div class="dropdown">
-                                <input type="hidden" name="id" th:value="${w.id}">
-                                <button onclick="myFunction()" type="submit" class="btn btn-warning "
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-check"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">
-                                        <button type="submit" class="btn btn-success "
-                                                data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                class="fa-solid fa-check-double"></i>
-                                        </button>
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="#">
-                                        <button type="submit" class="btn btn-danger "
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-minus"></i>
-                                        </button>
-                                    </a></li>
-                                </ul>
+                            <div class="wp-block-button is-style-fill">
+                                <form class="d-inline" th:action="@{/card/status/dontknow}" method="post">
+                                    <input type="hidden" name="id" th:value="${w.word.id}">
+                                    <button class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </form>
+                                <button class="btn btn-warning btn-sm"><i class="fa-solid fa-check"></i></button>
+                                <form class="d-inline" th:action="@{/card/status/know}" method="post">
+                                    <input type="hidden" name="id" th:value="${w.word.id}">
+                                    <button class="btn btn-outline-success btn-sm"><i
+                                            class="fa-solid fa-check-double"></i></button>
+                                </form>
                             </div>
                         </td>
-
                         <td th:if="${w.learnStatus == T(de.kozdemir.springbootlanguageexercise.model.LearnStatus).KNOW}">
-
-                            <div class="dropdown">
-
-                                <button onclick="myFunction()" type="submit" class="btn btn-success "
-                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                        class="fa-solid fa-check-double"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <form th:action="@{/card/status/little}" method="get">
-                                        <input type="hidden" name="id" th:value="${w.word.id}">
-                                        <li><a class="dropdown-item" href="#" >
-                                            <button type="submit" class="btn btn-warning "
-                                                    data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                    class="fa-solid fa-check"></i>
-                                            </button>
-                                        </a></li>
-                                    </form>
-                                    <form th:action="@{/card/status/notknow}" method="post">
-                                        <input type="hidden" name="id" th:value="${w.word.id}">
-                                        <li><a class="dropdown-item" href="#">
-                                            <button type="submit" class="btn btn-danger "
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa-solid fa-minus"></i>
-                                            </button>
-                                        </a></li>
-                                    </form>
-                                </ul>
+                            <div class="wp-block-button is-style-fill">
+                                <form class="d-inline" th:action="@{/card/status/dontknow}" method="post">
+                                    <input type="hidden" name="id" th:value="${w.word.id}">
+                                    <button class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </form>
+                                <form class="d-inline" th:action="@{/card/status/little}" method="post">
+                                    <input type="hidden" name="id" th:value="${w.word.id}">
+                                    <button class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-check"></i>
+                                    </button>
+                                </form>
+                                <button class="btn btn-success btn-sm"><i class="fa-solid fa-check-double"></i></button>
                             </div>
                         </td>
+
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm">Add sentence</button>
+                        </td>
+
+                        <td>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                                aria-expanded="false" aria-controls="flush-collapseOne">
+                                            Sentences
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                         aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+
+                                            <table>
+                                                <tbody>
+                                                <tr th:each="s : ${w.word.sentences}">
+                                                    <th th:text="${s.sentenceMeaning}"></th>
+                                                    <th th:text="' ['+${s.sentenceMother}+' ]'"></th>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
                     </tr>
                     </tbody>
                 </table>
@@ -163,6 +169,40 @@
         }
     }
 </script>
+
+
+<script>
+    const modal = document.querySelector(".modal");
+    const overlay = document.querySelector(".overlay");
+    const openModalBtn = document.querySelector(".btn-open");
+    const closeModalBtn = document.querySelector(".btn-close");
+
+    // close modal function
+    const closeModal = function () {
+        modal.classList.add("hidden");
+        overlay.classList.add("hidden");
+    };
+
+    // close the modal when the close button and overlay is clicked
+    closeModalBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
+
+    // close modal when the Esc key is pressed
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            closeModal();
+        }
+    });
+
+    // open modal function
+    const openModal = function () {
+        modal.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+    };
+    // open modal event
+    openModalBtn.addEventListener("click", openModal);
+</script>
+
 </body>
 
 
