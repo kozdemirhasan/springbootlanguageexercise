@@ -26,12 +26,10 @@
 
                     <input type="hidden" name="wordId" th:value="${wordId}">
 
-
                     <div class="col">
                         <input type="text" class="form-control"  th:field="*{sentenceMeaning}" placeholder="meaning in foreign language">
                         <p th:if="${#fields.hasErrors('sentenceMeaning')}" th:errors="*{sentenceMeaning}" class="text-danger"></p>
                     </div>
-
 
                     <div class="col">
                         <input type="text" class="form-control"  th:field="*{sentenceMother}"  placeholder="the sentence in your mother language">
@@ -42,7 +40,6 @@
                 <button class="btn btn-success">Add new sentence</button>
 
             </form>
-
 
         </div>
     </div>

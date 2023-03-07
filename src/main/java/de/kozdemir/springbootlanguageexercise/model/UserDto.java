@@ -27,10 +27,7 @@ public class UserDto implements WithConfirmedPassword {
     @NotEmpty
     private String email;
 
-
-
     private Languages motherLanguage;
-
 
     private Languages targetLanguage;
 

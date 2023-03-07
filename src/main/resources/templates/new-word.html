@@ -25,7 +25,6 @@
             <div th:if="${success}" class="alert alert-success">Erfolgreich registriert.</div>
             <div th:if="${error}" class="alert alert-danger">Das Wort ist bereits gespeichert</div>
 
-
             <form th:action="@{/word/save}" method="post" th:object="${word}">
                 <div class="row mb-4">
 
@@ -43,8 +42,6 @@
                                placeholder="the word in your mother language">
                         <p th:if="${#fields.hasErrors('wordMother')}" th:errors="*{wordMother}" class="text-danger"></p>
                     </div>
-
-
 
                     <div class="col">
                         <label for="level" class="form-label">Level</label>

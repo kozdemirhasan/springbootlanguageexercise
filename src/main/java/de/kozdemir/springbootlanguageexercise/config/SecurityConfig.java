@@ -22,7 +22,6 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        // Diese Ordner sollen von der Security nicht beschützt werden
         return web -> web.ignoring().antMatchers("/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico");
     }
 
@@ -30,7 +29,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // Request -> Server -> SecurityChain -> Controller -> Response
         http
                 .csrf().disable()
                 //.httpBasic()
@@ -47,9 +45,9 @@ public class SecurityConfig {
                 .and()
                 .logout().logoutUrl("/logout")
                 .invalidateHttpSession(true); // Session wird ungültig
-        //.deleteCookies("JSESSIONID"); // Session-Cookie wird im Browser gelöscht
+        //.deleteCookies("JSESSIONID");
 
-        http.headers().frameOptions().sameOrigin(); // Freigabe der Frames für H2-Datenbank
+        http.headers().frameOptions().sameOrigin();
 
         return http.build();
     }

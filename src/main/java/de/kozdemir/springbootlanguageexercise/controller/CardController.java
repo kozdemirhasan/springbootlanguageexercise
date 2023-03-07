@@ -54,10 +54,17 @@ public class CardController {
 
     @GetMapping("cards")
     public String userCardList(Model model) {
+        List<Card> cardList = cardService.getUserCardList(loginService.getUser().getId());
+        if (cardList.size() > 0) {
+            model.addAttribute("userCardList", cardList);
+            model.addAttribute("title", true);
+            return "user-word-list";
+        } else {
+            model.addAttribute("userCardList", cardList);
+            model.addAttribute("emptyWordList", true);
+            return "user-word-list";
+        }
 
-        model.addAttribute("userCardList", cardService.getUserCardList(loginService.getUser().getId()));
-        model.addAttribute("title", "My Word List");
-        return "user-word-list";
     }
 
 
@@ -104,14 +111,14 @@ public class CardController {
     @GetMapping("learn-status/dontknow")
     public void statusLearnDontknow(Long id, Model model) {
         if (cardService.changeStatusTo(id, LearnStatus.NOTKNOW) != null) {
-           dontKnowCards(model);
+            dontKnowCards(model);
         }
     }
 
     @GetMapping("learn-status/little")
     public String statusLearnLittle(Long id, Model model) {
         if (cardService.changeStatusTo(id, LearnStatus.LITTLE) != null) {
-          return "redirect:/card/dont-know";
+            return "redirect:/card/dont-know";
         }
         return null;
     }

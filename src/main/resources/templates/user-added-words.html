@@ -35,7 +35,6 @@
                         <th></th>
                     </tr>
                     </thead>
-
                     <tbody>
                     <tr th:each="w : ${userAddedWords}">
                         <td class="fw-bold" th:text="${w.wordMeaning}"></td>
@@ -44,11 +43,13 @@
                             <button type="submit" class="btn mx-3 btn-outline-info btn-sm ">Info</button>
                         </td>
                         <td>
-                            <button type="submit" class="btn mx-3 btn-outline-primary btn-sm ">Add Sentence</button>
+                            <form th:action="@{/sentence/new}" method="get">
+                                <input type="hidden" name="id" th:value="${w.id}">
+                                <button type="submit" class="btn mx-3 btn-outline-primary btn-sm ">Add Sentence</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
-
                 </table>
         </div>
     </div>

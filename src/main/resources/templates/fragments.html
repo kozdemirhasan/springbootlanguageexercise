@@ -30,9 +30,6 @@
                     <a href="/admin" class="nav-link">Admin</a>
                 </li>
 
-                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN')">
-                    <a href="/admin" class="nav-link">Admin islemleri</a>
-                </li>
 
                 <!-- USER  -->
                 <li class="nav-item dropdown" sec:authorize="hasAnyRole('USER')">

@@ -4,5 +4,5 @@ import lombok.ToString;
 
 @ToString
 public enum Languages {
-    ARABIC, ENGLISH, GERMAN, SPANISH, TURKISH
+    ARABIC, CHINESE, ENGLISH, FRENCH, GERMAN, JAPANESE, RUSSIAN, SPANISH, TURKISH
 }

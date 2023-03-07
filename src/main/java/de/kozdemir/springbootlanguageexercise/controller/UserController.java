@@ -4,6 +4,7 @@ import de.kozdemir.springbootlanguageexercise.model.*;
 import de.kozdemir.springbootlanguageexercise.repository.TokenRepository;
 import de.kozdemir.springbootlanguageexercise.repository.UserRepository;
 import de.kozdemir.springbootlanguageexercise.service.CustomEmailService;
+import de.kozdemir.springbootlanguageexercise.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,13 @@ public class UserController {
 
     @Autowired
     private CustomEmailService emailService;
+    @Autowired
+    private LoginService loginService;
 
 
     @GetMapping("")
     public String index(Model model) {
+        model.addAttribute("userName",loginService.getUser().getUsername());
         return "standart";
     }
 
@@ -54,8 +58,6 @@ public class UserController {
         emailService.sendSimpleEmail("p.parker@shield.org", "Du bist raus...", "Das reicht. Du bist bei uns raus...");
         return "redirect:/";
     }
-
-
 
     @GetMapping("forgot")
     public String forgotForm(UserDto userDto, Model model) {
@@ -115,7 +117,6 @@ public class UserController {
         }
         return "reset-password";
     }
-
 
     @GetMapping("register")
     public String register(UserDto userDto, Model model) {

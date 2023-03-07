@@ -20,7 +20,6 @@ public class SentenceService implements Serializable {
     @Autowired
     SentenceRepository sentenceRepository;
 
-
     public Sentence addSentence(Sentence sentence) {
 
         sentence.setCreatedAt(LocalDateTime.now());

@@ -12,7 +12,6 @@ public class LoginService implements Serializable {
 
     private User user;
 
-
     public User getUser() {
         return user;
     }

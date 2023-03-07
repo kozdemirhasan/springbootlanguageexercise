@@ -29,7 +29,6 @@ public class CardService implements Serializable {
     @Autowired
     private CardRepository cardRepository;
 
-
     public Card addCard(Long id) {
 
         User user = loginService.getUser();
@@ -54,7 +53,6 @@ public class CardService implements Serializable {
         else
             return false;
     }
-
 
     public List<Card> getUserCardList(long id) {
         List<Card> userCards = cardRepository.findByUserId(id);

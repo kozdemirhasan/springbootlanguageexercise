@@ -39,7 +39,7 @@ public class Card implements Serializable {
     @ManyToOne
     private User user;
 
-    //Word ve Card ararsinda ManyToMany iliskisi var
+    //Zwischen Word and Card gibt ManyToOne beziehung
     @JoinColumn(name = "WORD_ID", referencedColumnName = "WORD_ID")
     @ManyToOne
     private Word word;

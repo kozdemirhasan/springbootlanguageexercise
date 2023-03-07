@@ -1,6 +1,5 @@
 package de.kozdemir.springbootlanguageexercise.controller;
 
-import de.kozdemir.springbootlanguageexercise.model.Languages;
 import de.kozdemir.springbootlanguageexercise.model.Word;
 import de.kozdemir.springbootlanguageexercise.repository.WordRepository;
 import de.kozdemir.springbootlanguageexercise.service.CardService;

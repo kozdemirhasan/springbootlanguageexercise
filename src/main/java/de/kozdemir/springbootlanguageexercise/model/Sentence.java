@@ -38,11 +38,5 @@ public class Sentence implements Serializable {
     @ManyToOne
     private Word word;
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(sentenceMeaning).append('\'');
-        sb.append("\n");
-        return sb.toString();
-    }
+
 }

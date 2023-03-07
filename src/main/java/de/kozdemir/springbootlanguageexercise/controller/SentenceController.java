@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -39,22 +40,39 @@ public class SentenceController {
     @GetMapping("new")
     public String add(long id, Sentence sentence, Model model) {
         Word w = wordRepository.findById(id).get();
-        model.addAttribute("titleAddSentence", "Add sentence for ( " + w.getWordMeaning()  +  ": " + w.getWordMother()+ " )");
+        model.addAttribute("titleAddSentence", "Add sentence for ( " + w.getWordMeaning() + ": " + w.getWordMother() + " )");
         model.addAttribute("wordId", id);
-//        sentence.setWord(wordRepository.findById(id).get());
-
-//        model.addAttribute("sentence", sentence);
 
         return "new-sentence";
+    }
+
+    @PostMapping("add-sentence")
+    public String addSentence(long id, String mother, String meaning, Model model) {
+
+        if (mother.isEmpty() || meaning.isEmpty()) {
+            model.addAttribute("errorAddSentence", "An error occurred");
+            return "redirect:/card/cards";
+        } else {
+
+            Word w = wordRepository.findById(id).get();
+
+            Sentence sentence = new Sentence();
+            sentence.setWord(w);
+            sentence.setSentenceMother(mother);
+            sentence.setSentenceMeaning(meaning);
+            sentence.setCreatedAt(LocalDateTime.now());
+            sentence.setCreatedUser(loginService.getUser().getId());
+
+            sentenceRepository.save(sentence);
+
+            return "redirect:/card/cards";
+        }
     }
 
     @PostMapping("save")
     public String save(@Valid Sentence sentence, Long wordId, BindingResult result, Model model) {
 
         sentence.setWord(wordRepository.findById(wordId).get());
-
-//        model.addAttribute("motherLanguage", loginService.getUser().getMotherLanguage().name());
-//        model.addAttribute("targetLanguage", loginService.getUser().getTargetLanguage().name());
 
         if (result.hasErrors()) {
             return "new-sentence";
@@ -63,9 +81,8 @@ public class SentenceController {
             return "new-sentence";
         } else {
             model.addAttribute("success", true); // success
-
-            model.addAttribute("title", wordRepository.findById(wordId).get().getWordMother()); // ekleme yapilan kelime
-            model.addAttribute("sentencesoftheword", sentenceRepository.findByWordId(wordId)); // kelime ile ilgili cümleler
+            model.addAttribute("title", wordRepository.findById(wordId).get().getWordMother()); // add word
+            model.addAttribute("sentencesoftheword", sentenceRepository.findByWordId(wordId)); // sentences for word
 
             return "word-details";
         }
@@ -73,7 +90,7 @@ public class SentenceController {
     }
 
     @GetMapping("details")
-    public String sentences(Long id, Model model){
+    public String sentences(Long id, Model model) {
         model.addAttribute("sentencesoftheword", sentenceRepository.findByWordId(id)); // kelime ile ilgili cümleler
         return "word-details";
     }
