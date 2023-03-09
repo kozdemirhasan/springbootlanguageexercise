@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("")
     public String index(Model model) {
-        model.addAttribute("userName",loginService.getUser().getUsername());
+        model.addAttribute("userName", loginService.getUser().getUsername());
         return "standart";
     }
 
@@ -128,8 +128,14 @@ public class UserController {
 
         return "register";
     }
+
     @PostMapping("register")
     public String registerProcess(@Valid UserDto userDto, BindingResult result, Model model) throws MessagingException {
+        List<String> languageList = Stream.of(Languages.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+
+        model.addAttribute("languages", languageList);
 
         if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
             result.rejectValue("passwordConfirmation", "error.userDto", "Passwörter müssen übereinstimmen.");
@@ -137,27 +143,40 @@ public class UserController {
         }
 
         if (userDto.getMotherLanguage().equals(userDto.getTargetLanguage())) {
-            model.addAttribute("languages", Arrays.asList(Languages.values()));
+
             result.rejectValue("targetLanguage", "error.userDto", "Beide Sprache können NICHT gleich sein");
         }
 
         if (result.hasErrors()) {
             return "register";
         }
-        User user = userDto.convert(passwordEncoder);
-        userRepository.save(user);
-        Token token = new Token(user, Token.TokenType.ACTIVATION);
-        tokenRepository.save(token);
-        //emailService.sendSimpleEmail(user.getEmail(), "Registrierung", "Du hast dich erfolgreich registriert...");
-        //emailService.sendHtmlEmail(user.getEmail(), "Registrierung");
-        emailService.sendHtmlRegisterEmail(user, token.getId());
+        try{
+            User user = userDto.convert(passwordEncoder);
+            userRepository.save(user);
+            Token token = new Token(user, Token.TokenType.ACTIVATION);
+            tokenRepository.save(token);
+            //emailService.sendSimpleEmail(user.getEmail(), "Registrierung", "Du hast dich erfolgreich registriert...");
+            //emailService.sendHtmlEmail(user.getEmail(), "Registrierung");
+            emailService.sendHtmlRegisterEmail(user, token.getId());
+        }catch (Exception e){
+            model.addAttribute("usernameCannot", true);
+            return "register";
+        }
+
         return "redirect:/register/success";
 
     }
 
     @GetMapping("register/success")
     public String registerSuccess(UserDto userDto, Model model) {
+        List<String> languageList = Stream.of(Languages.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+
+        model.addAttribute("languages", languageList);
+
         model.addAttribute("success", true);
+
         return "register";
     }
 
