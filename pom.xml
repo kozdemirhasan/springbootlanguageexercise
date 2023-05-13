@@ -10,7 +10,7 @@
     </parent>
     <groupId>de.kozdemir</groupId>
     <artifactId>springbootlanguageexcercise</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>springbootlanguageexcercise</name>
     <description>springbootlanguageexcercise</description>
     <properties>

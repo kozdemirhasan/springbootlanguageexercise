@@ -38,13 +38,13 @@ public class UserController {
     private LoginService loginService;
 
 
-    @GetMapping("")
+    @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("userName", loginService.getUser().getUsername());
         return "standart";
     }
 
-    @GetMapping({"login", "login/{sub}"})
+    @GetMapping({"/login", "/login/{sub}"})
     public String login(@PathVariable Optional<String> sub, Model model) {
         sub.ifPresent(s -> {
             model.addAttribute(s, true);
@@ -53,19 +53,19 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("mail")
+    @GetMapping("/mail")
     public String sendMail(Model model) {
         emailService.sendSimpleEmail("p.parker@shield.org", "Du bist raus...", "Das reicht. Du bist bei uns raus...");
         return "redirect:/";
     }
 
-    @GetMapping("forgot")
+    @GetMapping("/forgot")
     public String forgotForm(UserDto userDto, Model model) {
         model.addAttribute("userDto", userDto);
         return "forgot";
     }
 
-    @PostMapping("forgot")
+    @PostMapping("/forgot")
     public String sendForgotEmail(UserDto userDto, Model model) throws MessagingException {
 
         // Wenn nicht vorhanden, soll eine Exception geworfen werden
@@ -81,7 +81,7 @@ public class UserController {
         return "forgot";
     }
 
-    @GetMapping("forgot/reset")
+    @GetMapping("/forgot/reset")
     public String checkForgotToken(@RequestParam("token") String tokenStr, Model model) {
         try {
             Optional<Token> opt = tokenRepository.findByIdAndType(UUID.fromString(tokenStr), Token.TokenType.PASSWORD);
@@ -103,7 +103,7 @@ public class UserController {
         return "reset-password";
     }
 
-    @PostMapping("forgot/reset")
+    @PostMapping("/forgot/reset")
     public String resetPassword(UserDto userDto, Model model) {
         Optional<User> opt = userRepository.findByEmailIgnoreCase(userDto.getEmail());
         if (opt.isPresent()) {
@@ -111,6 +111,7 @@ public class UserController {
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userRepository.save(user);
             // TODO: alten Token löschen
+            System.out.println("XXXXXXXXXXXX");
             model.addAttribute("success", true);
         } else {
             model.addAttribute("error", true);
@@ -118,7 +119,7 @@ public class UserController {
         return "reset-password";
     }
 
-    @GetMapping("register")
+    @GetMapping("/register")
     public String register(UserDto userDto, Model model) {
         List<String> languageList = Stream.of(Languages.values())
                 .map(Enum::name)
@@ -129,7 +130,7 @@ public class UserController {
         return "register";
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public String registerProcess(@Valid UserDto userDto, BindingResult result, Model model) throws MessagingException {
         List<String> languageList = Stream.of(Languages.values())
                 .map(Enum::name)

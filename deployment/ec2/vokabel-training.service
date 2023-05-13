@@ -1,0 +1,15 @@
+[Unit]
+Description=Vokabel-Training Springboot Application
+
+[Service]
+SuccessExitStatus=143
+User=root
+
+ExecStart=/opt/hmurat/vokabel-training/vokabel-training.sh
+ExecStop=/bin/kill -13 $MAINPID
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

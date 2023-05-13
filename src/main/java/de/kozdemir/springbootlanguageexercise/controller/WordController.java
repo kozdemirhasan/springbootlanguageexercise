@@ -33,7 +33,7 @@ public class WordController {
     @Autowired
     CardService cardService;
 
-    @GetMapping("")
+    @GetMapping("/")
     public String userPage(Model model) {
         return "home";
     }
@@ -45,7 +45,7 @@ public class WordController {
         return "new-word";
     }
 
-    @PostMapping("save")
+    @PostMapping("/save")
     public String save(@Valid Word word, BindingResult result, Model model) {
 
         model.addAttribute("motherLanguage", loginService.getUser().getMotherLanguage().name());
@@ -89,7 +89,7 @@ public class WordController {
         }
     }
 
-    @GetMapping("added")
+    @GetMapping("/added")
     public String added(Model model) {
         List<Word> userAddedWords = wordService.userAddedWords();
         model.addAttribute("title", "The words I added.");
@@ -98,7 +98,7 @@ public class WordController {
         return "user-word-list";
     }
 
-    @GetMapping("user-words")
+    @GetMapping("/user-words")
     public String userAddedWords(Model model) {
 
         List<Word> userAddedWords = wordService.userAddedWords();
@@ -108,7 +108,7 @@ public class WordController {
         return "user-added-words";
     }
 
-    @GetMapping("learn")
+    @GetMapping("/learn")
     public String learn(Model model) {
 
         return "learning-time";

@@ -37,7 +37,7 @@ public class SentenceController {
     private WordRepository wordRepository;
 
 
-    @GetMapping("new")
+    @GetMapping("/new")
     public String add(long id, Sentence sentence, Model model) {
         Word w = wordRepository.findById(id).get();
         model.addAttribute("titleAddSentence", "Add sentence for ( " + w.getWordMeaning() + ": " + w.getWordMother() + " )");
@@ -46,7 +46,7 @@ public class SentenceController {
         return "new-sentence";
     }
 
-    @PostMapping("add-sentence")
+    @PostMapping("/add-sentence")
     public String addSentence(long id, String mother, String meaning, Model model) {
 
         if (mother.isEmpty() || meaning.isEmpty()) {
@@ -69,7 +69,7 @@ public class SentenceController {
         }
     }
 
-    @PostMapping("save")
+    @PostMapping("/save")
     public String save(@Valid Sentence sentence, Long wordId, BindingResult result, Model model) {
 
         sentence.setWord(wordRepository.findById(wordId).get());
@@ -89,7 +89,7 @@ public class SentenceController {
 
     }
 
-    @GetMapping("details")
+    @GetMapping("/details")
     public String sentences(Long id, Model model) {
         model.addAttribute("sentencesoftheword", sentenceRepository.findByWordId(id)); // kelime ile ilgili cümleler
         return "word-details";

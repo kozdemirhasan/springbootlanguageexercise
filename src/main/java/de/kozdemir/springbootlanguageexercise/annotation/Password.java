@@ -2,7 +2,6 @@ package de.kozdemir.springbootlanguageexercise.annotation;
 
 import de.kozdemir.springbootlanguageexercise.validator.PasswordConstraintValidator;
 
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;

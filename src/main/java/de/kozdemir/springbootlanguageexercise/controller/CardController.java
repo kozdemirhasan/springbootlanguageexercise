@@ -33,7 +33,7 @@ public class CardController {
     CardService cardService;
 
 
-    @GetMapping("add")
+    @GetMapping("/add")
     public String add(Long id, Model model) {
         Card card = cardService.addCard(id);
 
@@ -52,7 +52,7 @@ public class CardController {
         return "user-word-list";
     }
 
-    @GetMapping("cards")
+    @GetMapping("/cards")
     public String userCardList(Model model) {
         List<Card> cardList = cardService.getUserCardList(loginService.getUser().getId());
         if (cardList.size() > 0) {
@@ -69,7 +69,7 @@ public class CardController {
 
 
     // Change Status
-    @PostMapping("status/dontknow")
+    @PostMapping("/status/dontknow")
     public String statusDontknow(Long id, Model model) {
 
         if (cardService.changeStatusTo(id, LearnStatus.NOTKNOW) != null) {
@@ -82,7 +82,7 @@ public class CardController {
         return "user-word-list";
     }
 
-    @PostMapping("status/little")
+    @PostMapping("/status/little")
     public String statusLittle(Long id, Model model) {
 
         if (cardService.changeStatusTo(id, LearnStatus.LITTLE) != null) {
@@ -95,7 +95,7 @@ public class CardController {
         return "user-word-list";
     }
 
-    @PostMapping("status/know")
+    @PostMapping("/status/know")
     public String statusKnow(Long id, Model model) {
 
         if (cardService.changeStatusTo(id, LearnStatus.KNOW) != null) {
@@ -108,14 +108,14 @@ public class CardController {
     }
 
     //change learn seite status
-    @GetMapping("learn-status/dontknow")
+    @GetMapping("/learn-status/dontknow")
     public void statusLearnDontknow(Long id, Model model) {
         if (cardService.changeStatusTo(id, LearnStatus.NOTKNOW) != null) {
             dontKnowCards(model);
         }
     }
 
-    @GetMapping("learn-status/little")
+    @GetMapping("/learn-status/little")
     public String statusLearnLittle(Long id, Model model) {
         if (cardService.changeStatusTo(id, LearnStatus.LITTLE) != null) {
             return "redirect:/card/dont-know";
@@ -123,7 +123,7 @@ public class CardController {
         return null;
     }
 
-    @GetMapping("learn-status/know")
+    @GetMapping("/learn-status/know")
     public String statusLearnKnow(Long id, Model model) {
         if (cardService.changeStatusTo(id, LearnStatus.KNOW) != null) {
             return "redirect:/card/dont-know";
@@ -131,7 +131,7 @@ public class CardController {
         return null;
     }
 
-    @GetMapping("dont-know")
+    @GetMapping("/dont-know")
     public String dontKnowCards(Model model) {
         List<Card> lastEightCards = cardService.dontKnowCards();
         model.addAttribute("lastEightCards", lastEightCards);
