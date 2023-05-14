@@ -19,7 +19,6 @@ public class SpringbootlanguageexcerciseApplication implements CommandLineRunner
     private PasswordEncoder passwordEncoder;
 
     @Value("${db.admin.user.reset}")
-
     private boolean adminReset;
 
 
