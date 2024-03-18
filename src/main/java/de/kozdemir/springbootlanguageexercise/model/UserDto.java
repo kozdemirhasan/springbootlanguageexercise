@@ -31,10 +31,10 @@ public class UserDto implements WithConfirmedPassword {
 
     private Languages targetLanguage;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,25}$", message = "Passwort ist ungültig.")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?,.])[A-Za-z\\d#$@!%&*?,.]{8,25}$", message = "Passwort ist ungültig.")
     private String password;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,25}$", message = "Passwort ist ungültig.")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?,.])[A-Za-z\\d#$@!%&*?,.]{8,25}$", message = "Passwort ist ungültig.")
     private String passwordConfirmation;
 
     public User convert(PasswordEncoder passwordEncoder) {

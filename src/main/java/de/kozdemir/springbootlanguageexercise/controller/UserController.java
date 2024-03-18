@@ -111,7 +111,6 @@ public class UserController {
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userRepository.save(user);
             // TODO: alten Token löschen
-            System.out.println("XXXXXXXXXXXX");
             model.addAttribute("success", true);
         } else {
             model.addAttribute("error", true);
@@ -144,7 +143,6 @@ public class UserController {
         }
 
         if (userDto.getMotherLanguage().equals(userDto.getTargetLanguage())) {
-
             result.rejectValue("targetLanguage", "error.userDto", "Beide Sprache können NICHT gleich sein");
         }
 
